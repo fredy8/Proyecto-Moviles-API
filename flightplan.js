@@ -22,7 +22,7 @@ var installDB = function (transport) {
   transport.sudo('mkdir -p /var/log/postgres');
   transport.sudo('touch /var/log/postgres/logfile.txt');
   transport.sudo('echo \'/usr/local/pgsql/bin/pg_ctl start -l /home/azureuser/postgres/logfile.txt -D /usr/local/pgsql/data\' >> /etc/rc.local');
-  transport.exec('sudo -u postgres psql -c "ALTER USER postgres PASSWORD \'postgres\';"');
+  transport.exec('sudo -u postgres psql -c "ALTER USER postgres PASSWORD \'' + environments.development.dbpassword + '\';"');
   transport.exec('sudo -u postgres psql -c "CREATE DATABASE accesibilidad;"');
 };
 
