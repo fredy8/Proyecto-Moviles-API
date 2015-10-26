@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 Promise.promisifyAll(jwt);
 
-const jwtSecret = 'anvse9y8l4n23khnr78vnaehr5alwir743';
+const jwtSecret = 'kcge76nisbv5ksgv3sifvnwuccpm342vfw';
 const router = express.Router();
 
 router.use((req, res, next) => {

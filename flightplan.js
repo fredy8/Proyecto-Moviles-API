@@ -80,5 +80,5 @@ plan.remote('deploy', function (transport) {
   transport.exec('cd /home/node/api && NODE_ENV=production sudo -E npm install');
   transport.sudo('pkill forever || true');
   transport.sudo('pkill node || true');
-  transport.exec('sudo -E NODE_ENV=production /home/node/api/node_modules/.bin/forever start -a --uid "api" /home/node/api/server.js');
+  transport.exec('sudo -E NODE_ENV=production /home/node/api/node_modules/forever/bin/forever start -a --uid "api" /home/node/api/server.js');
 });
