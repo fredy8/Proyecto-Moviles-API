@@ -4,6 +4,7 @@ import validations from '../../utils/validations';
 export default (req, res, next) => {
   const { projectName } = req.body;
 
+  console.log(projectName);
   if (!validations.projectName(projectName)) {
     return next([400, 'Invalid project name.']);
   }
