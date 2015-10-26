@@ -14,5 +14,6 @@ export default {
   validateObject: curryN(2, validateObject),
   isStringWithLength: curryN(2, isStringWithLength),
   username: isStringWithLength(4, 24),
-  password: isStringWithLength(6, 30)
+  password: isStringWithLength(6, 30),
+  projectName: isStringWithLength(4, 100)
 };

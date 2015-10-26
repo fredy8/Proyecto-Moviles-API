@@ -36,7 +36,7 @@ export default function (req, res, next) {
       bcrypt.genSaltAsync(12)
       .then((salt) => bcrypt.hashAsync(password, salt))
       .then((hash) => transaction.queryAsync('INSERT INTO Users (username, hash) values ($1, $2);', [username, hash]))
-      .then(() => transaction.commit())
+      .then(() => transaction.commitAsync())
       .then(() => res.json({ _rels, token: jwt.sign({ username }, jwtSecret) }));
     })
   );

@@ -1,6 +1,7 @@
 import R from 'ramda';
 import express from 'express';
 import auth from './auth';
+import projects from './projects';
 import errorHandlers from './errorHandlers';
 import serverName from './serverName';
 
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
 
   if (req.username) {
     root.user = { username: req.username };
+    root._rels.projects = serverName.api + 'projects';
   } else {
     root._rels.login = serverName.api + 'login';
     root._rels.register = serverName.api + 'register';
@@ -25,6 +27,7 @@ router.get('/', (req, res) => {
   res.json(root);
 });
 
+router.use(projects);
 router.use(...errorHandlers);
 
 export default router;

@@ -76,9 +76,10 @@ plan.remote('deploy', function (transport) {
   transport.sudo('mkdir /home/node/api');
   transport.sudo('cp -R /tmp/' + tmpDir + '/build/* /home/node/api');
   transport.sudo('cp /tmp/' + tmpDir + '/package.json /home/node/api');
-  transport.sudo('find /data/www -type f -exec sed -i "s/{{API_LOCATION}}/http:\\\/\\\/' + plan.runtime.hosts[0].host + ':3000/g" {} +');
+  transport.sudo('find /home/node/api -type f -exec sed -i "s/{{API_LOCATION}}/http:\\\/\\\/' + plan.runtime.hosts[0].host + '/g" {} +');
   transport.exec('cd /home/node/api && NODE_ENV=production sudo -E npm install');
   transport.sudo('pkill forever || true');
   transport.sudo('pkill node || true');
   transport.exec('sudo -E NODE_ENV=production /home/node/api/node_modules/forever/bin/forever start -a --uid "api" /home/node/api/server.js');
+  transport.exec('sudo -E NODE_ENV=production node /home/node/api/database/setup.js');
 });
