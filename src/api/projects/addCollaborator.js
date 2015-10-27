@@ -5,8 +5,10 @@ export default (req, res, next) => {
   const { collaborator } = req.body;
   const projectId = req.params.id;
 
+  console.log(collaborator);
+
   if (!validations.username(collaborator)) {
-    return next([400, 'Invalid user name.']);
+    return next([400, 'Invalid username.']);
   }
 
   db.begin()
@@ -36,7 +38,7 @@ export default (req, res, next) => {
 
           transaction.queryAsync('INSERT INTO collaborators (userId, projectId) values ($1, $2)', [collaboratorId, projectId])
           .then(() => transaction.commitAsync())
-          .then(() => res.end());
+          .then(() => res.status(204).send());
         })
       })
     })
