@@ -23,9 +23,22 @@ export default function (req, res, next) {
   }
 
   const { username, password } = req.body;
+  console.log(username);
 
-  bcrypt.genSaltAsync(12)
-  .then((salt) => bcrypt.hashAsync(password, salt))
-  .then((hash) => db.queryAsync('INSERT INTO Users (username, hash) values ($1, $2);', [username, hash]))
-  .then(() => res.json({ _rels, token: jwt.sign({ username }, jwtSecret) }));
+  db.begin()
+  .then((transaction) => 
+    transaction.queryAsync('SELECT COUNT(*) FROM Users WHERE username = $1', [username])
+    .then(({rows}) => {
+      if (rows[0].count !== '0') {
+        return next([409, 'A user with that username already exists.']);
+      }
+
+      bcrypt.genSaltAsync(12)
+      .then((salt) => bcrypt.hashAsync(password, salt))
+      .then((hash) => transaction.queryAsync('INSERT INTO Users (username, hash) values ($1, $2);', [username, hash]))
+      .then(() => transaction.commitAsync())
+      .then(() => res.json({ _rels, token: jwt.sign({ username }, jwtSecret) }));
+    })
+  );
+  
 }

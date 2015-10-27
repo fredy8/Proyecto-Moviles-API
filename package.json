@@ -15,6 +15,7 @@
     "build": "npm run clean && node_modules/.bin/gulp build",
     "clean": "rm -rf build",
     "lint": "node_modules/.bin/eslint . --ext .js --ignore-path .eslintignore",
+    "deploy-staging": "npm run build && fly deploy:staging",
     "db": "psql -U postgres --host moviles-dev.cloudapp.net -d accesibilidad",
     "setup-db": "npm run build && node build/database/setup.js"
   },
