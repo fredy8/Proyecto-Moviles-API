@@ -3,7 +3,6 @@ import db from '../../database';
 import serverName from '../serverName';
 
 export default (req, res, next) => {
-  console.log('huh');
   const projectId = req.params.id;
   db.queryAsync(`SELECT p.id as projectId, name, username, u.id as userId FROM (
       (SELECT projectId as id, userId FROM Collaborators WHERE userId = $1 AND projectId = $2
@@ -12,7 +11,6 @@ export default (req, res, next) => {
       JOIN Projects as p ON pIds.id = p.id JOIN Users as u on userId = u.id);`,
   [req.user.id, projectId])
   .then(({rows}) => {
-    console.log(rows);
     if (!rows.length) {
       return next([404, 'Project not found']);
     }
