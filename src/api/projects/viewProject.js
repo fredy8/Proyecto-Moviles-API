@@ -11,7 +11,6 @@ export default (req, res, next) => {
       JOIN Projects as p ON pIds.id = p.id JOIN Users as u on userId = u.id);`,
   [req.user.id, projectId])
   .then(({rows}) => {
-    console.log(rows);
     if (!rows.length) {
       return next([404, 'Project not found']);
     }

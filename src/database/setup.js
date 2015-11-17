@@ -43,18 +43,3 @@ import database from './index.js'
 //   .then(() => transaction.commitAsync())
 //   .then(() => console.log('Created collaborators table.'));
 // }).catch((err) => console.log(err));
-
-database.queryAsync(`
-alter table Collaborators
-drop constraint collaborators_userid_fkey,
-drop constraint collaborators_projectid_fkey,
-add constraint collaborators_userid_fkey
-   foreign key (userId)
-   references Users(id)
-   on delete cascade,
-add constraint collaborators_projectid_fkey
-   foreign key (projectId)
-   references Projects(id)
-   on delete cascade;
-`)
-.then(() => console.log('altered collaborators table.'));
