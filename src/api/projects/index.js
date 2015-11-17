@@ -14,6 +14,6 @@ router.get('/projects', authorization.getUser, viewProjects);
 router.get('/projects/:id', authorization.getUser, viewProject);
 router.post('/projects/:id/collaborators', authorization.getUser, addCollaborator);
 router.delete('/projects/:id', authorization.getUser, deleteProject);
-router.patch('/projects/:id', authorization.getUser, editProject);
+router.put('/projects/:id', authorization.getUser, editProject);
 
 export default router;
