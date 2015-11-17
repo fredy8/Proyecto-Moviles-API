@@ -6,7 +6,7 @@ export default (req, res, next) => {
   const projectId = req.params.id;
 
   if (!validations.username(collaborator)) {
-    return next([400, 'Invalid user name.']);
+    return next([400, 'Invalid username.']);
   }
 
   db.begin()
@@ -28,7 +28,7 @@ export default (req, res, next) => {
         transaction.queryAsync(
           `SELECT COUNT(*) FROM (
           SELECT projectId as id FROM Collaborators WHERE userId = $1 AND projectId = $2 UNION ALL
-          SELECT id FROM Projects WHERE ownerId = $1) as projects`, [collaboratorId, projectId])
+          SELECT id FROM Projects WHERE ownerId = $1 AND id = $2) as projects`, [collaboratorId, projectId])
         .then(({rows}) => {
           if (rows[0].count !== '0') {
             return next([409, 'The user is already a collaborator of the project.']);
@@ -36,8 +36,8 @@ export default (req, res, next) => {
 
           transaction.queryAsync('INSERT INTO collaborators (userId, projectId) values ($1, $2)', [collaboratorId, projectId])
           .then(() => transaction.commitAsync())
-          .then(() => res.end());
-        })
+          .then(() => res.status(204).send());
+        });
       })
     })
   );

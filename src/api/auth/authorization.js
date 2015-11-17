@@ -16,7 +16,6 @@ const getUser = (req, res, next) => {
   db.queryAsync('SELECT * FROM Users where username = $1', [req.username])
   .then(({rows}) => {
     req.user = rows[0];
-    console.log('got user');
     next();
   });
 }
