@@ -35,8 +35,8 @@ import database from './index.js'
 // .then((transaction) => {
 //   transaction.queryAsync(`
 //     CREATE TABLE Collaborators (
-//       userId INTEGER NOT NULL REFERENCES Users(id),
-//       projectId INTEGER NOT NULL REFERENCES Projects(id),
+//       userId INTEGER NOT NULL REFERENCES Users(id) CASCADE ON DELETE,
+//       projectId INTEGER NOT NULL REFERENCES Projects(id) CASCADE ON DELETE,
 //       PRIMARY KEY(userId, projectId)
 //     );`)
 //   .then(() => transaction.queryAsync('CREATE INDEX collaboratorsUserIndex ON Collaborators (userId);'))
