@@ -22,8 +22,11 @@ export default function (req, res, next) {
     return next([400, 'Invalid user data.']);
   }
 
-  const { username, password } = req.body;
-  console.log(username);
+  const { username, password, name } = req.body;
+
+  if (!validations.name(name)) {
+    return next([400, 'Invalid user data.']);
+  }
 
   db.begin()
   .then((transaction) => 
@@ -35,7 +38,7 @@ export default function (req, res, next) {
 
       bcrypt.genSaltAsync(12)
       .then((salt) => bcrypt.hashAsync(password, salt))
-      .then((hash) => transaction.queryAsync('INSERT INTO Users (username, hash) values ($1, $2);', [username, hash]))
+      .then((hash) => transaction.queryAsync('INSERT INTO Users (username, hash, name) values ($1, $2, $3);', [username, hash, name]))
       .then(() => transaction.commitAsync())
       .then(() => res.json({ _rels, token: jwt.sign({ username }, jwtSecret) }));
     })

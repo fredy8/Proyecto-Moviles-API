@@ -13,6 +13,7 @@ export default {
   isNumberInRange: curryN(3, (min, max, num) => allPass([isNumber, inRange(min, max)], num)),
   validateObject: curryN(2, validateObject),
   isStringWithLength: curryN(2, isStringWithLength),
+  name: isStringWithLength(4, 70),
   username: isStringWithLength(4, 24),
   password: isStringWithLength(6, 30),
   projectName: isStringWithLength(4, 100)

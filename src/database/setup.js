@@ -9,7 +9,8 @@ import database from './index.js'
 //     CREATE TABLE Users (
 //       id SERIAL PRIMARY KEY,
 //       username VARCHAR(25) NOT NULL UNIQUE,
-//       hash VARCHAR(61) NOT NULL
+//       hash VARCHAR(61) NOT NULL,
+//       name VARCHAR(71) NOT NULL
 //     );`)
 //   .then(() =>
 //     transaction.queryAsync('CREATE UNIQUE INDEX usernameIndex ON Users (username);'))
@@ -43,3 +44,13 @@ import database from './index.js'
 //   .then(() => transaction.commitAsync())
 //   .then(() => console.log('Created collaborators table.'));
 // }).catch((err) => console.log(err));
+
+database.begin()
+.then((transaction) => {
+  transaction.queryAsync(`ALTER TABLE Users ADD COLUMN name VARCHAR(71) NOT NULL DEFAULT 'NO NAME'`)
+  .then(() => transaction.queryAsync(`ALTER TABLE Users ALTER COLUMN name DROP DEFAULT`))
+  .then(() => transaction.commitAsync());
+});
+
+
+database.queryAsync(`ALTER TABLE Users ADD COLUMN profilePicture BYTEA`);

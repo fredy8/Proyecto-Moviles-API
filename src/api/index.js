@@ -2,6 +2,7 @@ import R from 'ramda';
 import express from 'express';
 import auth from './auth';
 import projects from './projects';
+import profiles from './profiles';
 import errorHandlers from './errorHandlers';
 import serverName from './serverName';
 
@@ -28,6 +29,7 @@ router.get('/', (req, res) => {
 });
 
 router.use(projects);
+router.use(profiles);
 router.use(...errorHandlers);
 
 export default router;
