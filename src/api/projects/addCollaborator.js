@@ -1,5 +1,6 @@
 import db from '../../database';
 import validations from '../../utils/validations';
+import serverName from '../serverName';
 
 export default (req, res, next) => {
   const { collaborator } = req.body;
@@ -36,7 +37,13 @@ export default (req, res, next) => {
 
           transaction.queryAsync('INSERT INTO collaborators (userId, projectId) values ($1, $2)', [collaboratorId, projectId])
           .then(() => transaction.commitAsync())
-          .then(() => res.status(204).send());
+          .then(() => {
+            res.json({
+              _rels: {
+                self: `${serverName.api}profiles/${collaboratorId}`
+              }
+            });
+          });
         });
       })
     })
