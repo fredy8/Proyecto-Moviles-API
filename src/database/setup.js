@@ -10,7 +10,8 @@ import database from './index.js'
 //       id SERIAL PRIMARY KEY,
 //       username VARCHAR(25) NOT NULL UNIQUE,
 //       hash VARCHAR(61) NOT NULL,
-//       name VARCHAR(71) NOT NULL
+//       name VARCHAR(71) NOT NULL,
+//       profilePicture BYTEA
 //     );`)
 //   .then(() =>
 //     transaction.queryAsync('CREATE UNIQUE INDEX usernameIndex ON Users (username);'))
@@ -36,8 +37,8 @@ import database from './index.js'
 // .then((transaction) => {
 //   transaction.queryAsync(`
 //     CREATE TABLE Collaborators (
-//       userId INTEGER NOT NULL REFERENCES Users(id) CASCADE ON DELETE,
-//       projectId INTEGER NOT NULL REFERENCES Projects(id) CASCADE ON DELETE,
+//       userId INTEGER NOT NULL REFERENCES Users(id) ON DELETE CASCADE,
+//       projectId INTEGER NOT NULL REFERENCES Projects(id) ON DELETE CASCADE,
 //       PRIMARY KEY(userId, projectId)
 //     );`)
 //   .then(() => transaction.queryAsync('CREATE INDEX collaboratorsUserIndex ON Collaborators (userId);'))
@@ -45,12 +46,11 @@ import database from './index.js'
 //   .then(() => console.log('Created collaborators table.'));
 // }).catch((err) => console.log(err));
 
-database.begin()
-.then((transaction) => {
-  transaction.queryAsync(`ALTER TABLE Users ADD COLUMN name VARCHAR(71) NOT NULL DEFAULT 'NO NAME'`)
-  .then(() => transaction.queryAsync(`ALTER TABLE Users ALTER COLUMN name DROP DEFAULT`))
-  .then(() => transaction.commitAsync());
-});
-
-
-database.queryAsync(`ALTER TABLE Users ADD COLUMN profilePicture BYTEA`);
+// database.queryAsync(`
+// CREATE TABLE Evaluations (
+//   id SERIAL PRIMARY KEY,
+//   data JSON NOT NULL,
+//   projectId INTEGER NOT NULL REFERENCES Projects(id) ON DELETE CASCADE,
+//   name varchar(21) NOT NULL,
+//   type INTEGER NOT NULL
+// );`).catch((err) => console.log(err));

@@ -11,7 +11,7 @@ Promise.promisifyAll(jwt);
 
 const jwtSecret = 'kcge76nisbv5ksgv3sifvnwuccpm342vfw';
 
-const credentialsValidations = R.pick(['username', 'password'], validations);
+const credentialsValidations = R.pick(['username', 'password', 'name'], validations);
 
 const _rels = {
   self: serverName.api + 'register'
@@ -23,10 +23,6 @@ export default function (req, res, next) {
   }
 
   const { username, password, name } = req.body;
-
-  if (!validations.name(name)) {
-    return next([400, 'Invalid user data.']);
-  }
 
   db.begin()
   .then((transaction) => 

@@ -32,7 +32,8 @@ export default (req, res, next) => {
       isOwner,
       _rels: {
         self: `${serverName.api}projects/${projectId}`,
-        collaborators: `${serverName.api}projects/${projectId}/collaborators`
+        collaborators: `${serverName.api}projects/${projectId}/collaborators`,
+        evaluations: `${serverName.api}projects/${projectId}/evaluations`
       },
       _embedded: {
         collaborators: {
