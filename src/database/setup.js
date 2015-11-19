@@ -46,11 +46,17 @@ import database from './index.js'
 //   .then(() => console.log('Created collaborators table.'));
 // }).catch((err) => console.log(err));
 
+// database.queryAsync(`
+// CREATE TABLE Evaluations (
+//   id SERIAL PRIMARY KEY,
+//   data JSON NOT NULL,
+//   projectId INTEGER NOT NULL REFERENCES Projects(id) ON DELETE CASCADE,
+//   name varchar(21) NOT NULL,
+//   type INTEGER NOT NULL,
+//   frequency INTEGER NOT NULL DEFAULT 1
+// );`).catch((err) => console.log(err));
+
 database.queryAsync(`
-CREATE TABLE Evaluations (
-  id SERIAL PRIMARY KEY,
-  data JSON NOT NULL,
-  projectId INTEGER NOT NULL REFERENCES Projects(id) ON DELETE CASCADE,
-  name varchar(21) NOT NULL,
-  type INTEGER NOT NULL
-);`).catch((err) => console.log(err));
+ALTER TABLE Evaluations ADD COLUMN frequency INTEGER NOT NULL DEFAULT 1;`)
+.catch((err) => console.log(err));
+

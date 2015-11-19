@@ -1,4 +1,4 @@
-{
+export default {
   "Banqueta": {
     "Banqueta": [
       "Cambio de textura o tira táctil en cruces",
@@ -26,4 +26,4 @@
   "Excusado": [],
   "Lavamanos": [],
   "Barras de Apoyo": []
-}
+};
