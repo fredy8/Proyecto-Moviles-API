@@ -17,7 +17,7 @@ export default (req, res, next) => {
         return next([404, 'Project not found']);
       }
 
-      return transaction.queryAsync(`SELECT id, name, type FROM Evaluations WHERE projectId = $1 AND id = $2`, [projectId, evaluationId])
+      return transaction.queryAsync(`SELECT id, name, type, data, frequency FROM Evaluations WHERE projectId = $1 AND id = $2`, [projectId, evaluationId])
     }).then(({rows}) => {
       if (rows.length == 0) {
         return next([404, 'Evaluation not found.']);
