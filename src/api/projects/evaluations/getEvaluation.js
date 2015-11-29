@@ -31,7 +31,7 @@ export default (req, res, next) => {
         type,
         data,
         frequency,
-        picture,
+        picture: picture.toString('base64'),
         _rels: {
           self: `${serverName.api}projects/${projectId}/evaluations/${evaluationId}`,
         }

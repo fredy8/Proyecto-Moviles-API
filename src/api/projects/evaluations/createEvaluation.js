@@ -14,6 +14,8 @@ export default (req, res, next) => {
     return next([400, 'Invalid evaluation data.']);
   }
 
+  console.log('nani');
+
   let buffer = null;
   if (picture) {
     try {
