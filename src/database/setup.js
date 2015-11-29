@@ -56,7 +56,6 @@ import database from './index.js'
 //   frequency INTEGER NOT NULL DEFAULT 1
 // );`).catch((err) => console.log(err));
 
-// database.queryAsync(`
-// ALTER TABLE Evaluations ADD COLUMN frequency INTEGER NOT NULL DEFAULT 1;`)
-// .catch((err) => console.log(err));
-
+database.queryAsync(`
+ALTER TABLE Evaluations ADD COLUMN picture BYTEA;`)
+.catch((err) => console.log(err));

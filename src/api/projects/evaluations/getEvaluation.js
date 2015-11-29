@@ -17,23 +17,21 @@ export default (req, res, next) => {
         return next([404, 'Project not found']);
       }
 
-      return transaction.queryAsync(`SELECT id, name, type, data, frequency FROM Evaluations WHERE projectId = $1 AND id = $2`, [projectId, evaluationId])
+      return transaction.queryAsync(`SELECT id, name, type, data, frequency, picture FROM Evaluations WHERE projectId = $1 AND id = $2`, [projectId, evaluationId])
     }).then(({rows}) => {
       if (rows.length == 0) {
         return next([404, 'Evaluation not found.']);
       }
 
-      const name = rows[0].name;
+      const { name, type, data, frequency, picture } = rows[0];
       const id = rows[0].projectid;
-      const type = rows[0].type;
-      const data = rows[0].data;
-      const frequency = rows[0].frequency;
       res.json({
         id,
         name,
         type,
         data,
         frequency,
+        picture,
         _rels: {
           self: `${serverName.api}projects/${projectId}/evaluations/${evaluationId}`,
         }

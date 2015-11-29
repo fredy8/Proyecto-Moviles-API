@@ -6,7 +6,6 @@ export default (req, res, next) => {
   if (req.user.id != userId) {
     return next([401, `You do not have permission to edit the profile for the user with id ${userId}`]);
   }
-  console.log(req.body);
 
   const { profilePicture } = req.body;
 

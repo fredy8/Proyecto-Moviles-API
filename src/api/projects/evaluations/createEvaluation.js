@@ -6,12 +6,21 @@ import schema from './schema';
 export default (req, res, next) => {
   const projectId = req.params.id;
 
-  const { result, name } = req.body;
+  const { result, name, picture } = req.body;
   const type = validations.isNumber(req.body.type) ? req.body.type : parseInt(req.body.type, 10);
   const frequency = validations.isNumber(req.body.frequency) ? req.body.frequency : parseInt(req.body.frequency, 10);
 
   if (!validations.name(name) || !validations.isNumberInRange(0, R.toPairs(schema).length, type)) {
     return next([400, 'Invalid evaluation data.']);
+  }
+
+  let buffer = null;
+  if (picture) {
+    try {
+      buffer = new Buffer(picture, 'base64');
+    } catch(e) {
+      return next([400, 'picture must be a base64 encoded image.']);
+    }
   }
 
   db.begin().then((transaction) => {
@@ -25,7 +34,7 @@ export default (req, res, next) => {
         return next([404, 'Project not found']);
       }
 
-      return transaction.queryAsync(`INSERT INTO Evaluations (data, projectId, name, type, frequency) VALUES ($1, $2, $3, $4, $5);`, [result, projectId, name, type, frequency])
+      return transaction.queryAsync(`INSERT INTO Evaluations (data, projectId, name, type, frequency, picture) VALUES ($1, $2, $3, $4, $5, $6);`, [result, projectId, name, type, frequency, buffer])
     }).then(() => transaction.commitAsync())
     .then(() => {
       res.status(204).send();
