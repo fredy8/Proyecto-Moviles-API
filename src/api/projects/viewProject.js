@@ -5,19 +5,20 @@ import serverName from '../serverName';
 export default (req, res, next) => {
   const projectId = req.params.id;
   db.queryAsync(`SELECT p.id as projectId, p.name, username, u.id as userId, isOwner FROM (
-      (SELECT projectId as id, userId, false as isOwner FROM Collaborators WHERE projectId = $2
+      (SELECT projectId as id, userId, false as isOwner FROM Collaborators WHERE projectId = $1
         UNION ALL
-      SELECT id, ownerId as userId, true as isOwner FROM Projects WHERE ownerId = $1 AND id = $2) as pIds
+      SELECT id, ownerId as userId, true as isOwner FROM Projects WHERE id = $1) as pIds
       JOIN Projects as p ON pIds.id = p.id JOIN Users as u on userId = u.id);`,
-  [req.user.id, projectId])
+  [projectId])
   .then(({rows}) => {
-    if (!rows.length) {
+    const userRows = rows.filter((row) => row.userid == req.user.id);
+    if (!userRows.length) {
       return next([404, 'Project not found']);
     }
 
     const name = rows[0].name;
     const id = rows[0].projectid;
-    const isOwner = rows[0].isowner;
+    const isOwner = userRows[0].isowner;
     const mapRowToCollaboratorResourceUrl = (row) => `${serverName.api}profiles/${row.userid}`;
     const mapRowToCollaboratorResource = (row) => ({
       username: row.username,

@@ -13,7 +13,7 @@ const getUser = (req, res, next) => {
     return next([401, 'Unauthorized.']);
   }
 
-  db.queryAsync('SELECT * FROM Users where username = $1', [req.username])
+  db.queryAsync('SELECT id, username, name FROM Users where username = $1', [req.username])
   .then(({rows}) => {
     req.user = rows[0];
     next();

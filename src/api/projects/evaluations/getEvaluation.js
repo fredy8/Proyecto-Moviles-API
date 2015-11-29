@@ -26,10 +26,14 @@ export default (req, res, next) => {
       const name = rows[0].name;
       const id = rows[0].projectid;
       const type = rows[0].type;
+      const data = rows[0].data;
+      const frequency = rows[0].frequency;
       res.json({
         id,
         name,
         type,
+        data,
+        frequency,
         _rels: {
           self: `${serverName.api}projects/${projectId}/evaluations/${evaluationId}`,
         }

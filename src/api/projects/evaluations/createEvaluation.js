@@ -6,8 +6,9 @@ import schema from './schema';
 export default (req, res, next) => {
   const projectId = req.params.id;
 
-  const { result, name, frequency } = req.body;
+  const { result, name } = req.body;
   const type = validations.isNumber(req.body.type) ? req.body.type : parseInt(req.body.type, 10);
+  const frequency = validations.isNumber(req.body.frequency) ? req.body.frequency : parseInt(req.body.frequency, 10);
 
   if (!validations.name(name) || !validations.isNumberInRange(0, R.toPairs(schema).length, type)) {
     return next([400, 'Invalid evaluation data.']);
