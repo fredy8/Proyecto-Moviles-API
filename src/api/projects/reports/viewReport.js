@@ -46,7 +46,7 @@ export default (req, res, next) => {
 
     res.json({
       _rels:{
-        self: `${serverName.api}projects/${projectId}/evaluations`
+        self: `${serverName.api}projects/${projectId}/report`
       },
       accessibility: result
     });
