@@ -28,14 +28,14 @@ export default (req, res, next) => {
   }
 
   db.queryAsync(`
-    SELECT id, name, latitude, longitude FROM Projects WHERE ownerId = $1 UNION ALL
-    SELECT id, name, latitude, longitude FROM Collaborators JOIN Projects ON projectId = id WHERE userId = $1
+    SELECT id, name, latitude, longitude, true as isOwner FROM Projects WHERE ownerId = $1 UNION ALL
+    SELECT id, name, latitude, longitude, false as isOwner FROM Collaborators JOIN Projects ON projectId = id WHERE userId = $1
     `, [req.user.id])
   .then((({rows}) => {
     rows.sort(distanceSort(latitude, longitude));
 
     const mapRowToResourceUrl = R.compose((id) => `${serverName.api}projects/${id}`, R.prop('id'));
-    const mapRowToEmbeddedResource = (row) => R.merge(R.pick(['id', 'name'], row), ({
+    const mapRowToEmbeddedResource = (row) => R.merge(R.pick(['id', 'name', 'isowner'], row), ({
       _rels: {
         self: mapRowToResourceUrl(row)
       },
