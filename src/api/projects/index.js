@@ -7,6 +7,7 @@ import addCollaborator from './addCollaborator';
 import deleteProject from './deleteProject';
 import editProject from './editProject';
 import evaluations from './evaluations';
+import reports from './reports';
 
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.post('/projects/:id/collaborators', authorization.getUser, addCollaborato
 router.delete('/projects/:id', authorization.getUser, deleteProject);
 router.put('/projects/:id', authorization.getUser, editProject);
 router.use(evaluations);
+router.use(reports);
 
 export default router;
