@@ -36,7 +36,8 @@ export default (req, res, next) => {
       _rels: {
         self: `${serverName.api}projects/${projectId}`,
         collaborators: `${serverName.api}projects/${projectId}/collaborators`,
-        evaluations: `${serverName.api}projects/${projectId}/evaluations`
+        evaluations: `${serverName.api}projects/${projectId}/evaluations`,
+        report: `${serverName.api}projects/${projectId}/report`
       },
       _embedded: {
         collaborators: {
