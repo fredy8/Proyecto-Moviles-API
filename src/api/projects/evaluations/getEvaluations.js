@@ -44,11 +44,11 @@ export default (req, res, next) => {
     }).then(({rows}) => {
       rows.sort(distanceSort(latitude, longitude));
       const mapRowToResourceUrl = R.compose((id) => `${serverName.api}projects/${projectId}/evaluations/${id}`, R.prop('id'));
-      const mapRowToEmbeddedResource = (row) => R.merge(row, ({
+      const mapRowToEmbeddedResource = (row) => R.merge(R.pick(['id', 'name', 'type'], row), {
         _rels: {
-          self: mapRowToResourceUrl(row)
-        },
-      }));
+          self: mapRowToResourceUrl(row),
+        }
+      });
 
       res.json({
         total: rows.length,

@@ -9,7 +9,10 @@ export default (req, res, next) => {
     const typeToPercentageList = {};
     rows.forEach((row) => {
       let yes = 0, no = 0;
-      row.data = JSON.parse(row.data);
+      if (typeof row.data == 'string') {
+        row.data = JSON.parse(row.data);
+      }
+
       Object.keys(row.data).forEach((key) => {
         const answers = row.data[key];
         answers.forEach((answer) => {
@@ -19,7 +22,7 @@ export default (req, res, next) => {
       });
 
       if (yes + no > 0) {
-      typeToPercentageList[row.type] = typeToPercentageList[row.type] || [];
+        typeToPercentageList[row.type] = typeToPercentageList[row.type] || [];
         typeToPercentageList[row.type].push({ percentage: yes / (yes + no), frequency: row.frequency });
       }
     });
@@ -32,7 +35,7 @@ export default (req, res, next) => {
 
       percentages.forEach((percentage) => {
         count += percentage.frequency;
-        sum += percentage.percentage;
+        sum += percentage.percentage * percentage.frequency;
       });
 
       totalSum += sum / count;
