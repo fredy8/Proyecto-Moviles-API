@@ -25,7 +25,8 @@ import database from './index.js'
 //     CREATE TABLE Projects (
 //       id SERIAL PRIMARY KEY,
 //       name VARCHAR(101) NOT NULL UNIQUE,
-//       ownerId INTEGER NOT NULL REFERENCES Users(id)
+//       ownerId INTEGER NOT NULL REFERENCES Users(id),
+//       picture BYTEA
 //     );`)
 //   .then(() =>
 //     transaction.queryAsync('CREATE UNIQUE INDEX projectNameIndex ON Projects (name);'))
@@ -53,9 +54,10 @@ import database from './index.js'
 //   projectId INTEGER NOT NULL REFERENCES Projects(id) ON DELETE CASCADE,
 //   name varchar(21) NOT NULL,
 //   type INTEGER NOT NULL,
-//   frequency INTEGER NOT NULL DEFAULT 1
+//   frequency INTEGER NOT NULL DEFAULT 1,
+//   picture BYTEA,
 // );`).catch((err) => console.log(err));
 
-database.queryAsync(`
-ALTER TABLE Evaluations ADD COLUMN picture BYTEA;`)
-.catch((err) => console.log(err));
+// database.queryAsync(`
+//   ALTER TABLE Projects ADD COLUMN latitude DECIMAL, ADD COLUMN longitude DECIMAL;`)
+// .catch((err) => console.log(err));

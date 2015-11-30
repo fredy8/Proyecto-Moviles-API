@@ -14,7 +14,27 @@ export default (req, res, next) => {
     return next([400, 'Invalid evaluation data.']);
   }
 
-  console.log('nani');
+  let { latitude, longitude } = req.body;
+
+  if (typeof latitude !== 'undefined' || typeof longitude !== 'undefined') {
+    try {
+      if(typeof latitude === 'string') {
+        latitude = parseFloat(latitude);
+      }
+
+      if(typeof longitude === 'string') {
+        longitude = parseFloat(longitude);
+      }
+
+      if (typeof latitude !== 'number' || typeof longitude !== 'number') {
+        return next([400, 'Invalid format for latitude or longitude.']);  
+      }
+    } catch (e) {
+      return next([400, 'Invalid format for latitude or longitude.']);
+    }
+  } else {
+    latitude = longitude = null;
+  }
 
   let buffer = null;
   if (picture) {
@@ -36,7 +56,7 @@ export default (req, res, next) => {
         return next([404, 'Project not found']);
       }
 
-      return transaction.queryAsync(`INSERT INTO Evaluations (data, projectId, name, type, frequency, picture) VALUES ($1, $2, $3, $4, $5, $6);`, [result, projectId, name, type, frequency, buffer])
+      return transaction.queryAsync(`INSERT INTO Evaluations (data, projectId, name, type, frequency, picture, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`, [result, projectId, name, type, frequency, buffer, latitude, longitude])
     }).then(() => transaction.commitAsync())
     .then(() => {
       res.status(204).send();
