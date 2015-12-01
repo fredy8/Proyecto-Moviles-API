@@ -1,4 +1,4 @@
-{
+export default {
   "Banqueta": {
     "Banqueta": [
       "Cambio de textura o tira táctil en cruces",
@@ -497,4 +497,4 @@
       "Se evitan manijas giratorias."
     ]
   }
-}
+};
